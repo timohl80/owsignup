@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Stacken ai – Open WebUI Gateway</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #1a1a1a;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      
+      .container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        width: 100%;
+        max-width: 400px;
+      }
+      
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      
+      .logo {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      
+      .title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+      }
+      
+      .subtitle {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.4;
+      }
+      
+      .form-group {
+        margin-bottom: 20px;
+      }
+      
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 6px;
+      }
+      
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        background: white;
+        color: #333;
+        transition: border-color 0.2s;
+      }
+      
+      input[type="email"]:focus,
+      input[type="password"]:focus {
+        outline: none;
+        border-color: #ff6b9d;
+      }
+      
+      .password-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      
+      .password-toggle {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        color: #888;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        transition: color 0.2s;
+      }
+      
+      .password-toggle:hover {
+        color: #ff6b9d;
+      }
+      
+      .password-container input[type="password"],
+      .password-container input[type="text"] {
+        padding-right: 45px;
+      }
+      
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .status-badge {
+        background: #f0f0f0;
+        color: #666;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      
+      .submit-btn {
+        width: 100%;
+        background: #ff6b9d;
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-top: 10px;
+      }
+      
+      .submit-btn:hover {
+        background: #ff5a8a;
+      }
+      
+      .submit-btn:disabled {
+        background: #666;
+        cursor: not-allowed;
+      }
+      
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 12px;
+        color: #999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <img src="digitalist.svg" alt="Digitalist Logo" width="120" height="120">
+        </div>
+        <h1 class="title">Stacken.ai</h1>
+        <p class="subtitle">Compliant by Digitalist</p>
+      </div>
+
+      <form id="registrationForm">
+        <div class="form-group">
+          <label for="email">E-post</label>
+          <input type="email" id="email" name="email" placeholder="namn@företag.se" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Lösenord</label>
+          <div class="password-container">
+            <input type="password" id="password" name="password" required>
+            <button type="button" class="password-toggle" id="passwordToggle">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <div class="status">
+            <span class="status-badge">Ej inbjuden</span>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Registrera konto</button>
+      </form>
+
+      <div class="footer">
+        Byggd för demo – koppla mot era riktiga endpoints i /api/openwebui/*.
+      </div>
+    </div>
+
+    <script>
+      // Password visibility toggle
+      document.getElementById('passwordToggle').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const toggleBtn = this;
+        
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          toggleBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          `;
+        } else {
+          passwordInput.type = 'password';
+          toggleBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          `;
+        }
+      });
+      
+      // Form submission
+      document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Registrerar...';
+        submitBtn.disabled = true;
+        
+        // Simulate registration process
+        setTimeout(() => {
+          window.location.replace('http://localhost:3000/signup');
+        }, 1500);
+      });
+    </script>
+  </body>
+</html>
