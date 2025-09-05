@@ -173,7 +173,7 @@
           <img src="digitalist.svg" alt="Digitalist Logo" width="120" height="120">
         </div>
         <h1 class="title">Stacken.ai</h1>
-        <p class="subtitle">Compliant by Digitalist</p>
+        <p class="subtitle">Compliant AI by Digitalist</p>
       </div>
 
       <form id="registrationForm">
@@ -236,7 +236,7 @@
       });
       
       // Form submission
-      document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      document.getElementById('registrationForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const submitBtn = document.getElementById('submitBtn');
@@ -244,10 +244,72 @@
         submitBtn.textContent = 'Registrerar...';
         submitBtn.disabled = true;
         
-        // Simulate registration process
-        setTimeout(() => {
-          window.location.replace('http://localhost:3000/signup');
-        }, 1500);
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        try {
+          const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password })
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            // Show success message
+            submitBtn.textContent = '✓ Registrerad!';
+            submitBtn.style.background = '#28a745';
+            
+            // Update status badge
+            const statusBadge = document.querySelector('.status-badge');
+            statusBadge.textContent = 'Väntar på godkännande';
+            statusBadge.style.background = '#ffc107';
+            statusBadge.style.color = '#000';
+            
+            // Show success message
+            const successDiv = document.createElement('div');
+            successDiv.style.cssText = `
+              background: #d4edda;
+              color: #155724;
+              padding: 15px;
+              border-radius: 8px;
+              margin-top: 20px;
+              border: 1px solid #c3e6cb;
+            `;
+            successDiv.innerHTML = `
+              <strong>Registrering lyckades!</strong><br>
+              Ditt konto har skapats och väntar på godkännande från en administratör.
+            `;
+            
+            document.querySelector('.container').appendChild(successDiv);
+            
+          } else {
+            // Show error message
+            submitBtn.textContent = 'Försök igen';
+            submitBtn.style.background = '#dc3545';
+            
+            alert('Registrering misslyckades: ' + result.message);
+            
+            setTimeout(() => {
+              submitBtn.textContent = originalText;
+              submitBtn.style.background = '#ff6b9d';
+            }, 3000);
+          }
+          
+        } catch (error) {
+          console.error('Registration error:', error);
+          submitBtn.textContent = 'Försök igen';
+          submitBtn.style.background = '#dc3545';
+          alert('Ett fel uppstod. Försök igen senare.');
+          
+          setTimeout(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = '#ff6b9d';
+          }, 3000);
+        }
       });
     </script>
   </body>
