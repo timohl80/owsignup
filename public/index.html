@@ -1,192 +1,271 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Stacken ai – Open WebUI Gateway</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background-color: #1a1a1a;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
-      
-      .container {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        padding: 40px;
-        width: 100%;
-        max-width: 400px;
-      }
-      
-      .header {
-        text-align: center;
-        margin-bottom: 30px;
-      }
-      
-      .logo {
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-      
-      .title {
-        font-size: 24px;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 8px;
-      }
-      
-      .subtitle {
-        font-size: 14px;
-        color: #666;
-        line-height: 1.4;
-      }
-      
-      .form-group {
-        margin-bottom: 20px;
-      }
-      
-      label {
-        display: block;
-        font-size: 14px;
-        font-weight: 500;
-        color: #333;
-        margin-bottom: 6px;
-      }
-      
-      input[type="email"],
-      input[type="password"] {
-        width: 100%;
-        padding: 12px 16px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 14px;
-        background: white;
-        color: #333;
-        transition: border-color 0.2s;
-      }
-      
-      input[type="email"]:focus,
-      input[type="password"]:focus {
-        outline: none;
-        border-color: #ff6b9d;
-      }
-      
-      .password-container {
-        position: relative;
-        display: flex;
-        align-items: center;
-      }
-      
-      .password-toggle {
-        position: absolute;
-        right: 12px;
-        background: none;
-        border: none;
-        color: #888;
-        cursor: pointer;
-        padding: 4px;
-        border-radius: 4px;
-        transition: color 0.2s;
-      }
-      
-      .password-toggle:hover {
-        color: #ff6b9d;
-      }
-      
-      .password-container input[type="password"],
-      .password-container input[type="text"] {
-        padding-right: 45px;
-      }
-      
-      .status {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      
-      .status-badge {
-        background: #f0f0f0;
-        color: #666;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 500;
-      }
-      
-      .submit-btn {
-        width: 100%;
-        background: #ff6b9d;
-        color: white;
-        border: none;
-        padding: 14px;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        margin-top: 10px;
-      }
-      
-      .submit-btn:hover {
-        background: #ff5a8a;
-      }
-      
-      .submit-btn:disabled {
-        background: #666;
-        cursor: not-allowed;
-      }
-      
-      .footer {
-        text-align: center;
-        margin-top: 30px;
-        font-size: 12px;
-        color: #999;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <div class="logo">
-          <img src="digitalist.svg" alt="Digitalist Logo" width="120" height="120">
-        </div>
-        <h1 class="title">Stacken.ai</h1>
-        <p class="subtitle">Compliant AI by Digitalist</p>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <title>Stacken.ai – Open WebUI Gateway</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* CSS Custom Properties */
+    :root {
+      --primary-color: #ff6b9d;
+      --primary-hover: #ff5a8a;
+      --success-color: #28a745;
+      --error-color: #dc3545;
+      --warning-color: #ffc107;
+      --text-primary: #333;
+      --text-secondary: #666;
+      --text-muted: #999;
+      --border-color: #ddd;
+      --background-dark: #1a1a1a;
+      --background-light: #f0f0f0;
+      --border-radius: 8px;
+      --border-radius-lg: 12px;
+      --spacing-xs: 6px;
+      --spacing-sm: 12px;
+      --spacing-md: 20px;
+      --spacing-lg: 30px;
+      --spacing-xl: 40px;
+    }
+
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--background-dark);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-md);
+    }
+
+    /* Layout Components */
+    .container {
+      background: white;
+      border-radius: var(--border-radius-lg);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: var(--spacing-xl);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .header {
+      margin-bottom: var(--spacing-md);
+      position: relative;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -10px;
+      left: -10px;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 40px 0 var(--spacing-xs) 0;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      margin: 0 0 var(--spacing-lg) 0;
+      text-align: center;
+    }
+
+    /* Form Components */
+    .form-group {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--spacing-sm) 16px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      background: white;
+      color: var(--text-primary);
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    .password-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-input {
+      padding-right: 45px;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: var(--spacing-sm);
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #888;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.2s;
+      z-index: 1;
+    }
+
+    .password-toggle:hover {
+      color: var(--primary-color);
+    }
+
+    /* Status Components */
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-badge {
+      background: var(--background-light);
+      color: var(--text-secondary);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Button Components */
+    .btn {
+      width: 100%;
+      border: none;
+      padding: 14px;
+      border-radius: var(--border-radius);
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-primary:disabled {
+      background: var(--text-secondary);
+      cursor: not-allowed;
+    }
+
+    .btn-success {
+      background: var(--success-color);
+    }
+
+    .btn-error {
+      background: var(--error-color);
+    }
+
+    /* Alert Components */
+    .alert {
+      padding: 15px;
+      border-radius: var(--border-radius);
+      margin-top: var(--spacing-md);
+      border: 1px solid;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border-color: #c3e6cb;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: var(--spacing-lg);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Utility Classes */
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <img src="digitalist.svg" alt="Digitalist Logo" width="80" height="80">
       </div>
+    </header>
 
-      <form id="registrationForm">
+    <main>
+      <h1 class="title">Stacken.ai</h1>
+      <p class="subtitle">Compliant AI by Digitalist©</p>
+      
+      <form id="registrationForm" novalidate>
         <div class="form-group">
-          <label for="email">E-post</label>
-          <input type="email" id="email" name="email" placeholder="namn@företag.se" required>
+          <label for="email" class="form-label">E-post</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="form-input"
+            placeholder="namn@företag.se" 
+            required
+            autocomplete="email"
+          >
         </div>
 
         <div class="form-group">
-          <label for="password">Lösenord</label>
+          <label for="password" class="form-label">Lösenord</label>
           <div class="password-container">
-            <input type="password" id="password" name="password" required>
-            <button type="button" class="password-toggle" id="passwordToggle">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input password-input"
+              required
+              autocomplete="new-password"
+            >
+            <button type="button" class="password-toggle" id="passwordToggle" aria-label="Visa/dölj lösenord">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                 <circle cx="12" cy="12" r="3"/>
@@ -196,121 +275,169 @@
         </div>
 
         <div class="form-group">
-          <label>Status</label>
+          <label class="form-label">Status</label>
           <div class="status">
-            <span class="status-badge">Ej inbjuden</span>
+            <span class="status-badge" id="statusBadge">Ej inbjuden</span>
           </div>
         </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn">Registrera konto</button>
+        <button type="submit" class="btn btn-primary" id="submitBtn">
+          Registrera konto
+        </button>
       </form>
+    </main>
 
-      <div class="footer">
-        Byggd för demo – koppla mot era riktiga endpoints i /api/openwebui/*.
-      </div>
-    </div>
+    <footer class="footer">
+      Copyright © 2025 Digitalist AB
+    </footer>
+  </div>
 
-    <script>
-      // Password visibility toggle
-      document.getElementById('passwordToggle').addEventListener('click', function() {
-        const passwordInput = document.getElementById('password');
-        const toggleBtn = this;
-        
-        if (passwordInput.type === 'password') {
-          passwordInput.type = 'text';
-          toggleBtn.innerHTML = `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-              <line x1="1" y1="1" x2="23" y2="23"/>
-            </svg>
-          `;
-        } else {
-          passwordInput.type = 'password';
-          toggleBtn.innerHTML = `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-          `;
-        }
-      });
+  <script>
+    // Constants
+    const SVG_ICONS = {
+      eye: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>`,
+      eyeOff: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+        <line x1="1" y1="1" x2="23" y2="23"/>
+      </svg>`
+    };
+
+    // DOM Elements
+    const elements = {
+      form: document.getElementById('registrationForm'),
+      emailInput: document.getElementById('email'),
+      passwordInput: document.getElementById('password'),
+      passwordToggle: document.getElementById('passwordToggle'),
+      submitBtn: document.getElementById('submitBtn'),
+      statusBadge: document.getElementById('statusBadge')
+    };
+
+    // Password Toggle Functionality
+    function togglePasswordVisibility() {
+      const isPassword = elements.passwordInput.type === 'password';
       
-      // Form submission
-      document.getElementById('registrationForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const submitBtn = document.getElementById('submitBtn');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Registrerar...';
-        submitBtn.disabled = true;
-        
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        try {
-          const response = await fetch('/api/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password })
-          });
-          
-          const result = await response.json();
-          
-          if (result.success) {
-            // Show success message
-            submitBtn.textContent = '✓ Registrerad!';
-            submitBtn.style.background = '#28a745';
-            
-            // Update status badge
-            const statusBadge = document.querySelector('.status-badge');
-            statusBadge.textContent = 'Väntar på godkännande';
-            statusBadge.style.background = '#ffc107';
-            statusBadge.style.color = '#000';
-            
-            // Show success message
-            const successDiv = document.createElement('div');
-            successDiv.style.cssText = `
-              background: #d4edda;
-              color: #155724;
-              padding: 15px;
-              border-radius: 8px;
-              margin-top: 20px;
-              border: 1px solid #c3e6cb;
-            `;
-            successDiv.innerHTML = `
-              <strong>Registrering lyckades!</strong><br>
-              Ditt konto har skapats och väntar på godkännande från en administratör.
-            `;
-            
-            document.querySelector('.container').appendChild(successDiv);
-            
-          } else {
-            // Show error message
-            submitBtn.textContent = 'Försök igen';
-            submitBtn.style.background = '#dc3545';
-            
-            alert('Registrering misslyckades: ' + result.message);
-            
-            setTimeout(() => {
-              submitBtn.textContent = originalText;
-              submitBtn.style.background = '#ff6b9d';
-            }, 3000);
-          }
-          
-        } catch (error) {
-          console.error('Registration error:', error);
-          submitBtn.textContent = 'Försök igen';
-          submitBtn.style.background = '#dc3545';
-          alert('Ett fel uppstod. Försök igen senare.');
-          
-          setTimeout(() => {
-            submitBtn.textContent = originalText;
-            submitBtn.style.background = '#ff6b9d';
-          }, 3000);
-        }
+      elements.passwordInput.type = isPassword ? 'text' : 'password';
+      elements.passwordToggle.innerHTML = isPassword ? SVG_ICONS.eyeOff : SVG_ICONS.eye;
+    }
+
+    // Form Validation
+    function validateForm() {
+      const email = elements.emailInput.value.trim();
+      const password = elements.passwordInput.value;
+
+      if (!email || !password) {
+        showError('E-post och lösenord krävs');
+        return false;
+      }
+
+      if (!isValidEmail(email)) {
+        showError('Ange en giltig e-postadress');
+        return false;
+      }
+
+      if (password.length < 6) {
+        showError('Lösenordet måste vara minst 6 tecken');
+        return false;
+      }
+
+      return true;
+    }
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // UI State Management
+    function setButtonState(text, className = 'btn-primary', disabled = false) {
+      elements.submitBtn.textContent = text;
+      elements.submitBtn.className = `btn ${className}`;
+      elements.submitBtn.disabled = disabled;
+    }
+
+    function updateStatusBadge(text, className = '') {
+      elements.statusBadge.textContent = text;
+      elements.statusBadge.className = `status-badge ${className}`;
+    }
+
+    function showSuccess() {
+      setButtonState('✓ Registrerad!', 'btn-success', true);
+      updateStatusBadge('Väntar på godkännande', 'status-warning');
+      
+      const successAlert = createAlert(
+        'Registrering lyckades!<br>Ditt konto har skapats och väntar på godkännande från en administratör.',
+        'alert-success'
+      );
+      
+      elements.form.appendChild(successAlert);
+    }
+
+    function showError(message) {
+      setButtonState('Försök igen', 'btn-error');
+      alert(message);
+      
+      setTimeout(() => {
+        setButtonState('Registrera konto', 'btn-primary');
+      }, 3000);
+    }
+
+    function createAlert(message, className) {
+      const alert = document.createElement('div');
+      alert.className = `alert ${className}`;
+      alert.innerHTML = `<strong>${message}</strong>`;
+      return alert;
+    }
+
+    // API Communication
+    async function registerUser(email, password) {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password })
       });
-    </script>
-  </body>
+
+      return response.json();
+    }
+
+    // Form Submission Handler
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      if (!validateForm()) {
+        return;
+      }
+
+      setButtonState('Registrerar...', 'btn-primary', true);
+      
+      try {
+        const result = await registerUser(
+          elements.emailInput.value.trim(),
+          elements.passwordInput.value
+        );
+        
+        if (result.success) {
+          showSuccess();
+        } else {
+          showError(result.message || 'Registrering misslyckades');
+        }
+        
+      } catch (error) {
+        console.error('Registration error:', error);
+        showError('Ett fel uppstod. Försök igen senare.');
+      }
+    }
+
+    // Event Listeners
+    elements.passwordToggle.addEventListener('click', togglePasswordVisibility);
+    elements.form.addEventListener('submit', handleFormSubmit);
+
+    // Initialize
+    console.log('Registration form initialized');
+  </script>
+</body>
 </html>
