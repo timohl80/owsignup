@@ -261,6 +261,175 @@
       display: block;
     }
 
+    /* Chatbot Widget Styles */
+    .chatbot-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 350px;
+      height: 500px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    .chatbot-widget.open {
+      display: flex;
+    }
+
+    .chatbot-header {
+      background: var(--primary-color);
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .chatbot-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .chatbot-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .message.bot {
+      background: #f1f5f9;
+      color: #334155;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .message.user {
+      background: var(--primary-color);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chatbot-input-container {
+      padding: 16px 20px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chatbot-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 24px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .chatbot-input:focus {
+      border-color: var(--primary-color);
+    }
+
+    .chatbot-send {
+      background: var(--primary-color);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+
+    .chatbot-send:hover {
+      background: var(--primary-hover);
+    }
+
+    .chatbot-send:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: var(--primary-color);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255, 107, 157, 0.3);
+      transition: all 0.3s;
+      z-index: 999;
+    }
+
+    .chatbot-toggle:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .quick-action {
+      background: #e2e8f0;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .quick-action:hover {
+      background: #cbd5e1;
+    }
+
     /* Utility Classes */
     .hidden {
       display: none;
@@ -380,6 +549,37 @@
     <footer class="footer">
       Copyright © 2025 Digitalist AB
     </footer>
+  </div>
+
+  <!-- Chatbot Widget -->
+  <button class="chatbot-toggle" id="chatbotToggle">
+    💬
+  </button>
+
+  <div class="chatbot-widget" id="chatbotWidget">
+    <div class="chatbot-header">
+      <h3 class="chatbot-title">Stacken.ai Support</h3>
+      <button class="chatbot-close" id="chatbotClose">×</button>
+    </div>
+    
+    <div class="chatbot-messages" id="chatbotMessages">
+      <div class="message bot">
+        Hej! 👋 Jag är här för att hjälpa dig med frågor om registrering och support. Vad kan jag hjälpa dig med?
+        <div class="quick-actions">
+          <button class="quick-action" data-question="account">Hur skapar jag ett konto?</button>
+          <button class="quick-action" data-question="contact">Vem kontaktar jag?</button>
+          <button class="quick-action" data-question="login">Inloggningsproblem</button>
+          <button class="quick-action" data-question="approval">Kontogodkännande</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="chatbot-input-container">
+      <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Skriv ditt meddelande här...">
+      <button class="chatbot-send" id="chatbotSend">
+        ➤
+      </button>
+    </div>
   </div>
 
   <script>
@@ -682,6 +882,157 @@
       console.error('Tab switching error:', error);
     }
     
+    // Chatbot functionality
+    const chatbotToggle = document.getElementById('chatbotToggle');
+    const chatbotWidget = document.getElementById('chatbotWidget');
+    const chatbotClose = document.getElementById('chatbotClose');
+    const chatbotMessages = document.getElementById('chatbotMessages');
+    const chatbotInput = document.getElementById('chatbotInput');
+    const chatbotSend = document.getElementById('chatbotSend');
+
+    // Chatbot responses
+    const chatbotResponses = {
+      account: {
+        message: "För att skapa ett konto:\n\n1. Fyll i din e-postadress i registreringsformuläret\n2. Välj ett säkert lösenord (minst 6 tecken)\n3. Klicka på 'Registrera'\n4. Ditt konto skapas och väntar på godkännande\n5. Du får ett e-postmeddelande när kontot är godkänt",
+        quickActions: [
+          { text: "Vad händer efter registrering?", question: "approval" },
+          { text: "Hur lång tid tar godkännande?", question: "timing" }
+        ]
+      },
+      contact: {
+        message: "För support och frågor kan du kontakta:\n\n📧 E-post: support@stacken.ai\n📞 Telefon: 08-123 456 78\n🕒 Öppettider: Mån-Fre 9:00-17:00\n\nDu kan också använda detta chattfönster för snabba frågor!",
+        quickActions: [
+          { text: "Tekniska problem", question: "technical" },
+          { text: "Kontogodkännande", question: "approval" }
+        ]
+      },
+      login: {
+        message: "Vanliga inloggningsproblem:\n\n❌ Fel lösenord → Kontrollera stavning och stor/liten bokstav\n❌ Konto inte godkänt → Vänta på e-postbekräftelse\n❌ Glömt lösenord → Kontakta support\n❌ E-post inte registrerat → Skapa konto först\n\nBehöver du mer hjälp?",
+        quickActions: [
+          { text: "Kontogodkännande", question: "approval" },
+          { text: "Kontakta support", question: "contact" }
+        ]
+      },
+      approval: {
+        message: "Kontogodkännande:\n\n⏱️ Vanlig väntetid: 1-2 arbetsdagar\n📧 Du får e-post när kontot är godkänt\n✅ Efter godkännande kan du logga in direkt\n\nKontakta support om det tar längre tid än 3 arbetsdagar.",
+        quickActions: [
+          { text: "Kontakta support", question: "contact" },
+          { text: "Hur loggar jag in?", question: "login" }
+        ]
+      },
+      timing: {
+        message: "Godkännandetid:\n\n⚡ Snabbast: 2-4 timmar (vardagar)\n📅 Vanligt: 1-2 arbetsdagar\n⏰ Längst: 3 arbetsdagar\n\nVi arbetar Måndag-Fredag 9:00-17:00",
+        quickActions: [
+          { text: "Kontakta support", question: "contact" },
+          { text: "Vad händer efter godkännande?", question: "after-approval" }
+        ]
+      },
+      technical: {
+        message: "Tekniska problem:\n\n🔧 Rensa webbläsarens cache\n🔄 Ladda om sidan (F5)\n🌐 Prova en annan webbläsare\n📱 Kontrollera internetanslutning\n\nKontakta support om problemet kvarstår.",
+        quickActions: [
+          { text: "Kontakta support", question: "contact" },
+          { text: "Inloggningsproblem", question: "login" }
+        ]
+      },
+      "after-approval": {
+        message: "Efter godkännande:\n\n✅ Du får e-postbekräftelse\n🔑 Logga in med din e-post och lösenord\n🚀 Du kommer automatiskt till Open WebUI\n💬 Börja chatta med AI-assistenten!\n\nVälkommen till Stacken.ai! 🎉",
+        quickActions: [
+          { text: "Hur loggar jag in?", question: "login" },
+          { text: "Mer hjälp", question: "contact" }
+        ]
+      }
+    };
+
+    // Toggle chatbot
+    chatbotToggle.addEventListener('click', function() {
+      chatbotWidget.classList.toggle('open');
+      if (chatbotWidget.classList.contains('open')) {
+        chatbotInput.focus();
+      }
+    });
+
+    // Close chatbot
+    chatbotClose.addEventListener('click', function() {
+      chatbotWidget.classList.remove('open');
+    });
+
+    // Send message
+    function sendMessage(message, isUser = true) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+      messageDiv.textContent = message;
+      chatbotMessages.appendChild(messageDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Add quick actions to message
+    function addQuickActions(actions) {
+      const quickActionsDiv = document.createElement('div');
+      quickActionsDiv.className = 'quick-actions';
+      
+      actions.forEach(action => {
+        const button = document.createElement('button');
+        button.className = 'quick-action';
+        button.textContent = action.text;
+        button.setAttribute('data-question', action.question);
+        quickActionsDiv.appendChild(button);
+      });
+      
+      const lastMessage = chatbotMessages.lastElementChild;
+      lastMessage.appendChild(quickActionsDiv);
+    }
+
+    // Handle quick action clicks
+    chatbotMessages.addEventListener('click', function(e) {
+      if (e.target.classList.contains('quick-action')) {
+        const question = e.target.getAttribute('data-question');
+        handleQuestion(question);
+      }
+    });
+
+    // Handle question
+    function handleQuestion(question) {
+      const response = chatbotResponses[question];
+      if (response) {
+        sendMessage(response.message, false);
+        if (response.quickActions) {
+          addQuickActions(response.quickActions);
+        }
+      } else {
+        sendMessage("Jag förstår inte din fråga. Kan du förtydliga eller välja en av alternativen ovan?", false);
+      }
+    }
+
+    // Send button click
+    chatbotSend.addEventListener('click', function() {
+      const message = chatbotInput.value.trim();
+      if (message) {
+        sendMessage(message, true);
+        chatbotInput.value = '';
+        
+        // Simple keyword matching for user input
+        const lowerMessage = message.toLowerCase();
+        if (lowerMessage.includes('konto') || lowerMessage.includes('registrera')) {
+          handleQuestion('account');
+        } else if (lowerMessage.includes('kontakt') || lowerMessage.includes('support')) {
+          handleQuestion('contact');
+        } else if (lowerMessage.includes('logga in') || lowerMessage.includes('inloggning')) {
+          handleQuestion('login');
+        } else if (lowerMessage.includes('godkänn') || lowerMessage.includes('vänta')) {
+          handleQuestion('approval');
+        } else {
+          handleQuestion('contact');
+        }
+      }
+    });
+
+    // Enter key to send
+    chatbotInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        chatbotSend.click();
+      }
+    });
+
     }); // End DOMContentLoaded
   </script>
 </body>
