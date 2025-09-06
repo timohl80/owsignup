@@ -79,6 +79,7 @@ const OPENWEBUI_API_URL = `${OPENWEBUI_URL}/api/v1`;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@localhost';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const API_KEY = process.env.OPENWEBUI_API_KEY || null;
+const JWT_TOKEN = process.env.OPENWEBUI_JWT_TOKEN || null;
 
 // Cache for admin JWT token
 let adminToken = null;
@@ -150,14 +151,26 @@ async function initializeAuth() {
 
 // Function to get admin JWT token
 async function getAdminToken() {
-  // Check if we have a valid token
+  // First try to use API key if available
+  if (API_KEY) {
+    console.log('Using API key for authentication');
+    return API_KEY;
+  }
+
+  // Then try to use JWT token if available
+  if (JWT_TOKEN) {
+    console.log('Using JWT token for authentication');
+    return JWT_TOKEN;
+  }
+
+  // Check if we have a valid cached token
   if (adminToken && tokenExpiry && Date.now() < tokenExpiry) {
     return adminToken;
   }
 
   try {
-    console.log('Getting admin token...');
-    const response = await fetch(`${OPENWEBUI_API_URL}/auths/signin`, {
+    console.log('Getting admin token via login...');
+    const response = await fetch(`${OPENWEBUI_URL}/api/v1/auths/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -170,10 +183,10 @@ async function getAdminToken() {
 
     if (response.ok) {
       const data = await response.json();
-      adminToken = data.access_token;
+      adminToken = data.access_token || data.token;
       // Set expiry to 1 hour from now (adjust as needed)
       tokenExpiry = Date.now() + (60 * 60 * 1000);
-      console.log('Admin token obtained successfully');
+      console.log('Admin token obtained successfully via login');
       return adminToken;
     } else {
       console.error('Failed to get admin token:', response.status, response.statusText);
@@ -548,6 +561,198 @@ app.get('/auth/:token', (req, res) => {
   `;
   
   res.send(html);
+});
+
+// Chatbot endpoint - connect to Open WebUI assistant
+app.post('/api/chatbot', async (req, res) => {
+  try {
+    const { message } = req.body;
+    
+    if (!message || typeof message !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Meddelande krävs'
+      });
+    }
+
+    // Sanitize the message
+    const sanitizedMessage = sanitizeString(message);
+    
+    console.log('Chatbot request:', sanitizedMessage);
+
+    // Check if Open WebUI is available
+    if (!OPENWEBUI_URL) {
+      console.log('Open WebUI not configured, using fallback response');
+      return res.json({
+        success: true,
+        response: "Jag är tyvärr inte tillgänglig just nu. Kontakta support@stacken.ai för hjälp."
+      });
+    }
+
+    // Get admin token for API access
+    const token = await getAdminToken();
+    if (!token) {
+      console.log('No admin token available, using fallback response');
+      return res.json({
+        success: true,
+        response: "Jag kan inte ansluta till supportsystemet just nu. Kontakta support@stacken.ai för hjälp."
+      });
+    }
+
+    // Use the correct Open WebUI chat completions endpoint
+    console.log('Calling Open WebUI chat completions...');
+    const completionResponse = await fetch(`${OPENWEBUI_URL}/api/v1/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        model: "register-support-stacken", // Your assistant name/ID
+        messages: [
+          {
+            role: "user",
+            content: sanitizedMessage
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 500
+      })
+    });
+
+    if (completionResponse.ok) {
+      const completionData = await completionResponse.json();
+      console.log('Open WebUI completion response:', completionData);
+      
+      let assistantResponse = "Jag förstår inte din fråga. Kan du förtydliga?";
+      
+      if (completionData && completionData.choices && completionData.choices.length > 0) {
+        assistantResponse = completionData.choices[0].message.content;
+      }
+      
+      console.log('Assistant response from completion:', assistantResponse);
+      
+      return res.json({
+        success: true,
+        response: assistantResponse
+      });
+    }
+
+    // If direct completion fails, try the chat approach
+    console.log('Direct completion failed, trying chat approach...');
+    const createChatResponse = await fetch(`${OPENWEBUI_API_URL}/chats`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        name: "Stacken.ai Support Chat",
+        model: "register-support-stacken",
+        messages: [
+          {
+            role: "user",
+            content: sanitizedMessage
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 500
+      })
+    });
+
+    if (!createChatResponse.ok) {
+      console.error('Open WebUI create chat error:', createChatResponse.status, createChatResponse.statusText);
+      const errorText = await createChatResponse.text();
+      console.error('Error details:', errorText);
+      return res.json({
+        success: true,
+        response: "Jag har tekniska problem just nu. Kontakta support@stacken.ai för hjälp."
+      });
+    }
+
+    const chatData = await createChatResponse.json();
+    console.log('Open WebUI chat created:', chatData);
+
+    // Extract the assistant's response from the chat
+    let assistantResponse = "Jag förstår inte din fråga. Kan du förtydliga?";
+    
+    if (chatData && chatData.messages && chatData.messages.length > 0) {
+      // Find the last assistant message
+      const assistantMessages = chatData.messages.filter(msg => msg.role === 'assistant');
+      if (assistantMessages.length > 0) {
+        const lastAssistantMessage = assistantMessages[assistantMessages.length - 1];
+        if (lastAssistantMessage.content) {
+          assistantResponse = lastAssistantMessage.content;
+        }
+      }
+    }
+
+    console.log('Assistant response from chat:', assistantResponse);
+
+    res.json({
+      success: true,
+      response: assistantResponse
+    });
+
+  } catch (error) {
+    console.error('Chatbot error:', error);
+    res.json({
+      success: true,
+      response: "Ett fel uppstod. Kontakta support@stacken.ai för hjälp."
+    });
+  }
+});
+
+// Debug endpoint to test Open WebUI connection
+app.get('/api/debug/openwebui', async (req, res) => {
+  try {
+    const token = await getAdminToken();
+    if (!token) {
+      return res.json({
+        success: false,
+        message: 'No admin token available'
+      });
+    }
+
+    // Test basic connection
+    const healthResponse = await fetch(`${OPENWEBUI_URL}`, { 
+      method: 'GET',
+      timeout: 5000 
+    });
+
+    // Test API access using correct endpoints
+    const apiResponse = await fetch(`${OPENWEBUI_URL}/api/v1/models`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    // Test assistants
+    const assistantsResponse = await fetch(`${OPENWEBUI_URL}/api/v1/assistants`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    res.json({
+      success: true,
+      openwebui_url: OPENWEBUI_URL,
+      health_status: healthResponse.ok ? 'OK' : 'FAILED',
+      api_status: apiResponse.ok ? 'OK' : 'FAILED',
+      assistants_status: assistantsResponse.ok ? 'OK' : 'FAILED',
+      token_available: !!token,
+      models: apiResponse.ok ? await apiResponse.json() : null,
+      assistants: assistantsResponse.ok ? await assistantsResponse.json() : null
+    });
+
+  } catch (error) {
+    res.json({
+      success: false,
+      error: error.message
+    });
+  }
 });
 
 // Health check endpoint

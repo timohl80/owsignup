@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="sv">
-<head>
-  <meta charset="utf-8" />
+  <head>
+    <meta charset="utf-8" />
   <title>Stacken.ai – Open WebUI Gateway</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
     /* CSS Custom Properties */
     :root {
       --primary-color: #ff6b9d;
@@ -28,156 +28,156 @@
     }
 
     /* Reset & Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--background-dark);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       padding: var(--spacing-md);
-    }
-
+      }
+      
     /* Layout Components */
-    .container {
-      background: white;
+      .container {
+        background: white;
       border-radius: var(--border-radius-lg);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       padding: var(--spacing-xl);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .header {
+        width: 100%;
+        max-width: 400px;
+      }
+      
+      .header {
       margin-bottom: var(--spacing-md);
       position: relative;
-    }
-
-    .logo {
-      width: 120px;
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      }
+      
+      .logo {
+        width: 120px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       position: absolute;
       top: -30px;
       left: -30px;
-    }
-
-    .logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .title {
-      font-size: 24px;
-      font-weight: 600;
+      }
+      
+      .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      
+      .title {
+        font-size: 24px;
+        font-weight: 600;
       color: var(--text-primary);
       margin: 60px 0 var(--spacing-xs) 0;
       text-align: center;
-    }
-
-    .subtitle {
+      }
+      
+      .subtitle {
       font-size: 12px;
       color: var(--text-secondary);
-      line-height: 1.4;
+        line-height: 1.4;
       margin: 0 0 var(--spacing-lg) 0;
       text-align: center;
-    }
-
+      }
+      
     /* Form Components */
-    .form-group {
+      .form-group {
       margin-bottom: var(--spacing-md);
-    }
-
+      }
+      
     .form-label {
-      display: block;
-      font-size: 14px;
-      font-weight: 500;
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
       color: var(--text-primary);
       margin-bottom: var(--spacing-xs);
-    }
-
+      }
+      
     .form-input {
-      width: 100%;
+        width: 100%;
       padding: var(--spacing-sm) 16px;
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius);
-      font-size: 14px;
-      background: white;
+        font-size: 14px;
+        background: white;
       color: var(--text-primary);
-      transition: border-color 0.2s;
-    }
-
+        transition: border-color 0.2s;
+      }
+      
     .form-input:focus {
-      outline: none;
+        outline: none;
       border-color: var(--primary-color);
-    }
-
-    .password-container {
-      position: relative;
+      }
+      
+      .password-container {
+        position: relative;
       width: 100%;
     }
 
     .password-input {
       padding-right: 45px;
-    }
-
-    .password-toggle {
-      position: absolute;
+      }
+      
+      .password-toggle {
+        position: absolute;
       right: var(--spacing-sm);
       top: 50%;
       transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: #888;
-      cursor: pointer;
-      padding: 4px;
-      border-radius: 4px;
-      transition: color 0.2s;
+        background: none;
+        border: none;
+        color: #888;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        transition: color 0.2s;
       z-index: 1;
-    }
-
-    .password-toggle:hover {
+      }
+      
+      .password-toggle:hover {
       color: var(--primary-color);
     }
 
     /* Status Components */
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .status-badge {
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .status-badge {
       background: var(--background-light);
       color: var(--text-secondary);
       padding: var(--spacing-xs) var(--spacing-sm);
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      
     /* Button Components */
     .btn {
-      width: 100%;
-      border: none;
-      padding: 14px;
+        width: 100%;
+        border: none;
+        padding: 14px;
       border-radius: var(--border-radius);
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      margin-top: 10px;
-    }
-
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-top: 10px;
+      }
+      
     .btn-primary {
       background: var(--primary-color);
       color: white;
@@ -189,9 +189,9 @@
 
     .btn-primary:disabled {
       background: var(--text-secondary);
-      cursor: not-allowed;
-    }
-
+        cursor: not-allowed;
+      }
+      
     .btn-success {
       background: var(--success-color);
     }
@@ -215,8 +215,8 @@
     }
 
     /* Footer */
-    .footer {
-      text-align: center;
+      .footer {
+        text-align: center;
       margin-top: var(--spacing-lg);
       font-size: 12px;
       color: var(--text-muted);
@@ -421,7 +421,7 @@
       border: none;
       padding: 8px 12px;
       border-radius: 16px;
-      font-size: 12px;
+        font-size: 12px;
       cursor: pointer;
       transition: background-color 0.2s;
     }
@@ -433,27 +433,27 @@
     /* Utility Classes */
     .hidden {
       display: none;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
     <header class="header">
-      <div class="logo">
-        <img src="digitalist.svg" alt="Digitalist Logo" width="120" height="120">
-      </div>
+        <div class="logo">
+          <img src="digitalist.svg" alt="Digitalist Logo" width="120" height="120">
+        </div>
     </header>
 
     <main>
-      <h1 class="title">Stacken.ai</h1>
-      <p class="subtitle">Compliant AI by Digitalist©</p>
+        <h1 class="title">Stacken.ai</h1>
+        <p class="subtitle">Compliant AI by Digitalist©</p>
       
       <!-- Tab Navigation -->
       <div class="tabs">
         <button class="tab active" data-tab="register-tab">Registrera</button>
         <button class="tab" data-tab="login-tab">Logga in</button>
       </div>
-      
+
       <!-- Registration Tab -->
       <div class="tab-content active" id="register-tab">
         <form id="registrationForm" novalidate>
@@ -500,7 +500,7 @@
         <button type="submit" class="btn btn-primary" id="submitBtn">
           Registrera konto
         </button>
-        </form>
+      </form>
       </div>
       
       <!-- Login Tab -->
@@ -547,7 +547,7 @@
     </main>
 
     <footer class="footer">
-      Copyright © 2025 Digitalist AB
+        Copyright © 2025 Digitalist AB
     </footer>
   </div>
 
@@ -564,7 +564,7 @@
     
     <div class="chatbot-messages" id="chatbotMessages">
       <div class="message bot">
-        Hej! 👋 Jag är här för att hjälpa dig med frågor om registrering och support. Vad kan jag hjälpa dig med?
+        Hej! 👋 Jag är din AI-assistent för Stacken.ai support. Jag kan hjälpa dig med frågor om registrering, inloggning och allt annat relaterat till vår tjänst. Vad kan jag hjälpa dig med?
         <div class="quick-actions">
           <button class="quick-action" data-question="account">Hur skapar jag ett konto?</button>
           <button class="quick-action" data-question="contact">Vem kontaktar jag?</button>
@@ -579,10 +579,10 @@
       <button class="chatbot-send" id="chatbotSend">
         ➤
       </button>
+      </div>
     </div>
-  </div>
 
-  <script>
+    <script>
     // Wait for DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', function() {
       console.log('DOM loaded, initializing...');
@@ -594,8 +594,8 @@
         <circle cx="12" cy="12" r="3"/>
       </svg>`,
       eyeOff: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-        <line x1="1" y1="1" x2="23" y2="23"/>
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
       </svg>`
     };
 
@@ -705,14 +705,14 @@
 
     // API Communication
     async function registerUser(email, password) {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password })
-      });
-
+          const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password })
+          });
+          
       return response.json();
     }
 
@@ -747,8 +747,8 @@
           elements.regEmailInput.value.trim(),
           elements.regPasswordInput.value
         );
-        
-        if (result.success) {
+          
+          if (result.success) {
           updateStatusBadge('Väntar på godkännande', 'status-warning');
           showSuccess(
             'Registrering lyckades!<br>Ditt konto har skapats och väntar på godkännande från en administratör.',
@@ -812,9 +812,9 @@
           }
         } else {
           showError(result.message || 'Inloggning misslyckades', elements.loginSubmitBtn, 'Logga in');
-        }
-        
-      } catch (error) {
+          }
+          
+        } catch (error) {
         console.error('Login error:', error);
         showError('Ett fel uppstod. Försök igen senare.', elements.loginSubmitBtn, 'Logga in');
       }
@@ -874,7 +874,7 @@
     try {
       switchTab('login-tab');
       console.log('Switch to login tab successful');
-      setTimeout(() => {
+          setTimeout(() => {
         switchTab('register-tab');
         console.log('Switch to register tab successful');
       }, 1000);
@@ -890,58 +890,7 @@
     const chatbotInput = document.getElementById('chatbotInput');
     const chatbotSend = document.getElementById('chatbotSend');
 
-    // Chatbot responses
-    const chatbotResponses = {
-      account: {
-        message: "För att skapa ett konto:\n\n1. Fyll i din e-postadress i registreringsformuläret\n2. Välj ett säkert lösenord (minst 6 tecken)\n3. Klicka på 'Registrera'\n4. Ditt konto skapas och väntar på godkännande\n5. Du får ett e-postmeddelande när kontot är godkänt",
-        quickActions: [
-          { text: "Vad händer efter registrering?", question: "approval" },
-          { text: "Hur lång tid tar godkännande?", question: "timing" }
-        ]
-      },
-      contact: {
-        message: "För support och frågor kan du kontakta:\n\n📧 E-post: support@stacken.ai\n📞 Telefon: 08-123 456 78\n🕒 Öppettider: Mån-Fre 9:00-17:00\n\nDu kan också använda detta chattfönster för snabba frågor!",
-        quickActions: [
-          { text: "Tekniska problem", question: "technical" },
-          { text: "Kontogodkännande", question: "approval" }
-        ]
-      },
-      login: {
-        message: "Vanliga inloggningsproblem:\n\n❌ Fel lösenord → Kontrollera stavning och stor/liten bokstav\n❌ Konto inte godkänt → Vänta på e-postbekräftelse\n❌ Glömt lösenord → Kontakta support\n❌ E-post inte registrerat → Skapa konto först\n\nBehöver du mer hjälp?",
-        quickActions: [
-          { text: "Kontogodkännande", question: "approval" },
-          { text: "Kontakta support", question: "contact" }
-        ]
-      },
-      approval: {
-        message: "Kontogodkännande:\n\n⏱️ Vanlig väntetid: 1-2 arbetsdagar\n📧 Du får e-post när kontot är godkänt\n✅ Efter godkännande kan du logga in direkt\n\nKontakta support om det tar längre tid än 3 arbetsdagar.",
-        quickActions: [
-          { text: "Kontakta support", question: "contact" },
-          { text: "Hur loggar jag in?", question: "login" }
-        ]
-      },
-      timing: {
-        message: "Godkännandetid:\n\n⚡ Snabbast: 2-4 timmar (vardagar)\n📅 Vanligt: 1-2 arbetsdagar\n⏰ Längst: 3 arbetsdagar\n\nVi arbetar Måndag-Fredag 9:00-17:00",
-        quickActions: [
-          { text: "Kontakta support", question: "contact" },
-          { text: "Vad händer efter godkännande?", question: "after-approval" }
-        ]
-      },
-      technical: {
-        message: "Tekniska problem:\n\n🔧 Rensa webbläsarens cache\n🔄 Ladda om sidan (F5)\n🌐 Prova en annan webbläsare\n📱 Kontrollera internetanslutning\n\nKontakta support om problemet kvarstår.",
-        quickActions: [
-          { text: "Kontakta support", question: "contact" },
-          { text: "Inloggningsproblem", question: "login" }
-        ]
-      },
-      "after-approval": {
-        message: "Efter godkännande:\n\n✅ Du får e-postbekräftelse\n🔑 Logga in med din e-post och lösenord\n🚀 Du kommer automatiskt till Open WebUI\n💬 Börja chatta med AI-assistenten!\n\nVälkommen till Stacken.ai! 🎉",
-        quickActions: [
-          { text: "Hur loggar jag in?", question: "login" },
-          { text: "Mer hjälp", question: "contact" }
-        ]
-      }
-    };
+    // Note: Static responses removed - now using Open WebUI assistant
 
     // Toggle chatbot
     chatbotToggle.addEventListener('click', function() {
@@ -986,22 +935,19 @@
     chatbotMessages.addEventListener('click', function(e) {
       if (e.target.classList.contains('quick-action')) {
         const question = e.target.getAttribute('data-question');
-        handleQuestion(question);
+        const questionText = e.target.textContent;
+        
+        // Send the question text to the assistant
+        sendMessage(questionText, true);
+        
+        // Disable send button while processing
+        chatbotSend.disabled = true;
+        chatbotSend.textContent = '...';
+        
+        // Call the Open WebUI assistant
+        callOpenWebUIAssistant(questionText);
       }
     });
-
-    // Handle question
-    function handleQuestion(question) {
-      const response = chatbotResponses[question];
-      if (response) {
-        sendMessage(response.message, false);
-        if (response.quickActions) {
-          addQuickActions(response.quickActions);
-        }
-      } else {
-        sendMessage("Jag förstår inte din fråga. Kan du förtydliga eller välja en av alternativen ovan?", false);
-      }
-    }
 
     // Send button click
     chatbotSend.addEventListener('click', function() {
@@ -1010,21 +956,42 @@
         sendMessage(message, true);
         chatbotInput.value = '';
         
-        // Simple keyword matching for user input
-        const lowerMessage = message.toLowerCase();
-        if (lowerMessage.includes('konto') || lowerMessage.includes('registrera')) {
-          handleQuestion('account');
-        } else if (lowerMessage.includes('kontakt') || lowerMessage.includes('support')) {
-          handleQuestion('contact');
-        } else if (lowerMessage.includes('logga in') || lowerMessage.includes('inloggning')) {
-          handleQuestion('login');
-        } else if (lowerMessage.includes('godkänn') || lowerMessage.includes('vänta')) {
-          handleQuestion('approval');
-        } else {
-          handleQuestion('contact');
-        }
+        // Disable send button while processing
+        chatbotSend.disabled = true;
+        chatbotSend.textContent = '...';
+        
+        // Call the Open WebUI assistant
+        callOpenWebUIAssistant(message);
       }
     });
+
+    // Function to call Open WebUI assistant
+    async function callOpenWebUIAssistant(message) {
+      try {
+        const response = await fetch('/api/chatbot', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: message })
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          sendMessage(data.response, false);
+        } else {
+          sendMessage("Jag har tekniska problem just nu. Kontakta support@stacken.ai för hjälp.", false);
+        }
+      } catch (error) {
+        console.error('Chatbot API error:', error);
+        sendMessage("Jag kan inte ansluta till supportsystemet just nu. Kontakta support@stacken.ai för hjälp.", false);
+      } finally {
+        // Re-enable send button
+        chatbotSend.disabled = false;
+        chatbotSend.textContent = '➤';
+      }
+    }
 
     // Enter key to send
     chatbotInput.addEventListener('keypress', function(e) {
@@ -1034,6 +1001,6 @@
     });
 
     }); // End DOMContentLoaded
-  </script>
-</body>
+    </script>
+  </body>
 </html>
