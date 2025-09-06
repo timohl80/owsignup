@@ -342,6 +342,30 @@
       border-bottom-right-radius: 4px;
     }
 
+    .message.bot a {
+      color: var(--primary-color);
+      text-decoration: underline;
+      font-weight: 500;
+      transition: all 0.2s;
+      position: relative;
+      padding-right: 16px;
+    }
+
+    .message.bot a:hover {
+      color: var(--primary-hover);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    .message.bot a::after {
+      content: "↗";
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
     .chatbot-input-container {
       padding: 16px 20px;
       border-top: 1px solid #e2e8f0;
@@ -909,10 +933,91 @@
     function sendMessage(message, isUser = true) {
       const messageDiv = document.createElement('div');
       messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-      messageDiv.textContent = message;
+      
+      if (isUser) {
+        messageDiv.textContent = message;
+      } else {
+        // For bot messages, parse URLs and make them clickable
+        createMessageWithLinks(messageDiv, message);
+      }
+      
       chatbotMessages.appendChild(messageDiv);
       chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
+
+    // Function to create message with clickable links
+    function createMessageWithLinks(container, text) {
+      // First handle markdown-style links [text](url)
+      const markdownRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+      let lastIndex = 0;
+      let match;
+      
+      while ((match = markdownRegex.exec(text)) !== null) {
+        // Add text before the link
+        if (match.index > lastIndex) {
+          const textBefore = text.slice(lastIndex, match.index);
+          container.appendChild(document.createTextNode(textBefore));
+        }
+        
+        // Create the link
+        const link = document.createElement('a');
+        link.href = match[2];
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = match[1];
+        container.appendChild(link);
+        
+        lastIndex = markdownRegex.lastIndex;
+      }
+      
+      // Add remaining text
+      if (lastIndex < text.length) {
+        let remainingText = text.slice(lastIndex);
+        
+        // Handle plain URLs in remaining text
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        let urlMatch;
+        let urlLastIndex = 0;
+        
+        while ((urlMatch = urlRegex.exec(remainingText)) !== null) {
+          // Add text before the URL
+          if (urlMatch.index > urlLastIndex) {
+            const textBefore = remainingText.slice(urlLastIndex, urlMatch.index);
+            container.appendChild(document.createTextNode(textBefore));
+          }
+          
+          // Create the URL link
+          let cleanUrl = urlMatch[1];
+          let trailingPunctuation = '';
+          
+          // Check if URL ends with punctuation
+          if (/[.,!?;:]$/.test(cleanUrl)) {
+            trailingPunctuation = cleanUrl.slice(-1);
+            cleanUrl = cleanUrl.slice(0, -1);
+          }
+          
+          const link = document.createElement('a');
+          link.href = cleanUrl;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.textContent = cleanUrl;
+          container.appendChild(link);
+          
+          // Add trailing punctuation
+          if (trailingPunctuation) {
+            container.appendChild(document.createTextNode(trailingPunctuation));
+          }
+          
+          urlLastIndex = urlRegex.lastIndex;
+        }
+        
+        // Add remaining text after URLs
+        if (urlLastIndex < remainingText.length) {
+          container.appendChild(document.createTextNode(remainingText.slice(urlLastIndex)));
+        }
+      }
+    }
+
 
     // Add quick actions to message
     function addQuickActions(actions) {
