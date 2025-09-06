@@ -120,6 +120,32 @@
         outline: none;
       border-color: var(--primary-color);
       }
+
+    .form-input.invalid {
+      border-color: #e74c3c;
+      box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+    }
+
+    .form-input.invalid:focus {
+      border-color: #e74c3c;
+      box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.3);
+    }
+
+    .validation-message {
+      font-size: 12px;
+      margin-top: 4px;
+      padding: 0 4px;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .validation-message.error {
+      color: #e74c3c;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
       
       .password-container {
         position: relative;
@@ -727,7 +753,7 @@
       }
 
       if (!isValidEmail(email)) {
-        showError('Ange en giltig e-postadress');
+        showError('Vänligen ange en giltig e-postadress (t.ex. namn@företag.se)');
         return false;
       }
 
@@ -742,6 +768,58 @@
     function isValidEmail(email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
+    }
+
+    function validateEmailField(emailInput) {
+      const email = emailInput.value.trim();
+      
+      // Clear any existing validation styling and messages
+      emailInput.classList.remove('invalid');
+      clearValidationMessage(emailInput);
+      
+      if (email && !isValidEmail(email)) {
+        emailInput.classList.add('invalid');
+        showValidationMessage(emailInput, 'Vänligen ange en giltig e-postadress (t.ex. namn@företag.se)');
+        return false;
+      }
+      
+      return true;
+    }
+
+    function showValidationMessage(input, message) {
+      // Remove any existing validation message
+      clearValidationMessage(input);
+      
+      // Create validation message element
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'validation-message error';
+      messageDiv.textContent = message;
+      
+      // Insert after the input field
+      input.parentNode.insertBefore(messageDiv, input.nextSibling);
+    }
+
+    function clearValidationMessage(input) {
+      const existingMessage = input.parentNode.querySelector('.validation-message');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+    }
+
+    function validatePasswordField(passwordInput) {
+      const password = passwordInput.value;
+      
+      // Clear any existing validation styling and messages
+      passwordInput.classList.remove('invalid');
+      clearValidationMessage(passwordInput);
+      
+      if (password && password.length < 6) {
+        passwordInput.classList.add('invalid');
+        showValidationMessage(passwordInput, 'Lösenordet måste vara minst 6 tecken');
+        return false;
+      }
+      
+      return true;
     }
 
     // UI State Management
@@ -930,6 +1008,50 @@
       console.log('Login form event listener added');
     } else {
       console.error('Login form not found!');
+    }
+
+    // Real-time email validation
+    if (elements.regEmailInput) {
+      elements.regEmailInput.addEventListener('blur', () => validateEmailField(elements.regEmailInput));
+      elements.regEmailInput.addEventListener('input', () => {
+        // Clear validation when user starts typing
+        if (elements.regEmailInput.classList.contains('invalid')) {
+          elements.regEmailInput.classList.remove('invalid');
+          clearValidationMessage(elements.regEmailInput);
+        }
+      });
+    }
+    if (elements.loginEmailInput) {
+      elements.loginEmailInput.addEventListener('blur', () => validateEmailField(elements.loginEmailInput));
+      elements.loginEmailInput.addEventListener('input', () => {
+        // Clear validation when user starts typing
+        if (elements.loginEmailInput.classList.contains('invalid')) {
+          elements.loginEmailInput.classList.remove('invalid');
+          clearValidationMessage(elements.loginEmailInput);
+        }
+      });
+    }
+
+    // Real-time password validation
+    if (elements.regPasswordInput) {
+      elements.regPasswordInput.addEventListener('blur', () => validatePasswordField(elements.regPasswordInput));
+      elements.regPasswordInput.addEventListener('input', () => {
+        // Clear validation when user starts typing
+        if (elements.regPasswordInput.classList.contains('invalid')) {
+          elements.regPasswordInput.classList.remove('invalid');
+          clearValidationMessage(elements.regPasswordInput);
+        }
+      });
+    }
+    if (elements.loginPasswordInput) {
+      elements.loginPasswordInput.addEventListener('blur', () => validatePasswordField(elements.loginPasswordInput));
+      elements.loginPasswordInput.addEventListener('input', () => {
+        // Clear validation when user starts typing
+        if (elements.loginPasswordInput.classList.contains('invalid')) {
+          elements.loginPasswordInput.classList.remove('invalid');
+          clearValidationMessage(elements.loginPasswordInput);
+        }
+      });
     }
 
     // Initialize
