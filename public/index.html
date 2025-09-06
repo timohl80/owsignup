@@ -291,6 +291,44 @@
       border-radius: 12px 12px 0 0;
     }
 
+    .chatbot-title-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chatbot-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon {
+      display: flex;
+      align-items: flex-end;
+      height: 20px;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .brand-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      margin: 0;
+    }
+
+    .tagline {
+      font-size: 8px;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0;
+      margin-top: 1px;
+    }
+
     .chatbot-title {
       font-size: 16px;
       font-weight: 600;
@@ -582,7 +620,21 @@
 
   <div class="chatbot-widget" id="chatbotWidget">
     <div class="chatbot-header">
-      <h3 class="chatbot-title">Stacken.ai Support</h3>
+      <div class="chatbot-title-container">
+        <div class="chatbot-logo">
+          <div class="logo-icon">
+            <div class="bar" style="height: 12px; width: 3px; background: white; margin-right: 2px;"></div>
+            <div class="bar" style="height: 18px; width: 3px; background: white; margin-right: 2px;"></div>
+            <div class="bar" style="height: 8px; width: 3px; background: white; margin-right: 2px;"></div>
+            <div class="bar" style="height: 4px; width: 3px; background: white;"></div>
+          </div>
+          <div class="logo-text">
+            <div class="brand-name">stacken.</div>
+            <div class="tagline">compliant AI by Digitalist®</div>
+          </div>
+        </div>
+        <h3 class="chatbot-title">Support</h3>
+      </div>
       <button class="chatbot-close" id="chatbotClose">×</button>
     </div>
     
