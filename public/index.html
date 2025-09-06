@@ -655,7 +655,7 @@
             <div class="bar" style="height: 4px; width: 3px; background: white;"></div>
           </div>
           <div class="logo-text">
-            <div class="brand-name">stacken.</div>
+            <div class="brand-name">Stacken.</div>
             <div class="tagline">compliant AI by Digitalist®</div>
           </div>
         </div>
@@ -1260,11 +1260,11 @@
         if (data.success) {
           sendMessage(data.response, false);
         } else {
-          sendMessage("Jag har tekniska problem just nu. Kontakta support@stacken.ai för hjälp.", false);
+          sendMessage("Jag har tekniska problem just nu. Kontakta support@Stacken.ai för hjälp.", false);
         }
       } catch (error) {
         console.error('Chatbot API error:', error);
-        sendMessage("Jag kan inte ansluta till supportsystemet just nu. Kontakta support@stacken.ai för hjälp.", false);
+        sendMessage("Jag kan inte ansluta till supportsystemet just nu. Kontakta support@Stacken.ai för hjälp.", false);
       } finally {
         // Re-enable send button
         chatbotSend.disabled = false;
