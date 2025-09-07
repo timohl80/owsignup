@@ -10,6 +10,8 @@ require('dotenv').config({ path: '.env.local' });
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+const OPENWEBUI_ASSISTANT_NAME = process.env.OPENWEBUI_ASSISTANT_NAME || "register-support-stacken";
+const VISITOR_FORM_ENABLED = process.env.VISITOR_FORM_ENABLED === 'true';
 
 // Security Middleware
 app.use(helmet({
@@ -608,7 +610,7 @@ app.post('/api/chatbot', async (req, res) => {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        model: "register-support-stacken", // Your assistant name/ID
+        model: OPENWEBUI_ASSISTANT_NAME, // Assistant name from environment
         messages: [
           {
             role: "user",
@@ -648,7 +650,7 @@ app.post('/api/chatbot', async (req, res) => {
       },
       body: JSON.stringify({
         name: "Stacken.ai Support Chat",
-        model: "register-support-stacken",
+        model: OPENWEBUI_ASSISTANT_NAME,
         messages: [
           {
             role: "user",
@@ -753,6 +755,78 @@ app.get('/api/debug/openwebui', async (req, res) => {
       error: error.message
     });
   }
+});
+
+// Google Form submission endpoint
+app.post('/api/submit-visitor-info', authLimiter, async (req, res) => {
+  try {
+    const { companyName, visitorName, phoneNumber, interests, followUp } = req.body;
+    
+    // Validate required fields
+    if (!companyName) {
+      return res.status(400).json({ error: 'Company name is required' });
+    }
+    
+    // Prepare data for Google Form submission
+    const formData = new FormData();
+    
+    // Map data to correct Google Form field IDs
+    formData.append('entry.1720623562', companyName || '');
+    formData.append('entry.1951240684', visitorName || '');
+    formData.append('entry.583287806', phoneNumber || '');
+    
+    // Map interests to Google Form option values
+    const interestMapping = {
+      'ai-integration': 'AI-Integration',
+      'custom-solutions': 'Anpassade lösningar', 
+      'pricing': 'Prisinformation',
+      'technical-demo': 'Teknisk demonstration',
+      'partnership': 'Partnerskapsmöjligheter'
+    };
+    
+    const mappedInterests = interests.map(interest => interestMapping[interest] || interest);
+    formData.append('entry.883444386', mappedInterests.join(', ') || '');
+    
+    formData.append('entry.1520381576', followUp ? 'Ja' : '');
+    
+    // Submit to Google Form
+    const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSc-zP4doJsYpE0q36G8WBVZd9DRo0ElEy2Ja1eI38zlEGBAXA/formResponse';
+    
+    const response = await fetch(googleFormUrl, {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors'
+    });
+    
+    console.log('Visitor data submitted to Google Form:', {
+      companyName,
+      visitorName,
+      phoneNumber,
+      interests: mappedInterests,
+      followUp
+    });
+    
+    res.json({ 
+      success: true, 
+      message: 'Visitor information submitted successfully',
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('Error submitting visitor info to Google Form:', error);
+    res.status(500).json({ 
+      error: 'Failed to submit visitor information',
+      details: error.message 
+    });
+  }
+});
+
+// Visitor form configuration endpoint
+app.get('/api/visitor-form-config', (req, res) => {
+  res.json({
+    enabled: VISITOR_FORM_ENABLED,
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Health check endpoint

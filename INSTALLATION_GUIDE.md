@@ -119,14 +119,17 @@ Edit the CSS variables in `public/index.html`:
 1. **Create an Assistant in Open WebUI:**
    - Go to your Open WebUI admin panel
    - Navigate to Assistants
-   - Create a new assistant named "support-assistant"
+   - Create a new assistant (e.g., "support-assistant", "company-support", etc.)
    - Configure it with your company information
 
-2. **Update the Assistant Name:**
-   ```javascript
-   // In server.js, find this line and update:
-   model: "support-assistant", // Your assistant name
+2. **Configure the Assistant Name:**
+   Add this to your `.env.local` file:
+   ```env
+   # Assistant Configuration
+   OPENWEBUI_ASSISTANT_NAME=your-assistant-name-here
    ```
+   
+   The assistant name should match exactly what you created in Open WebUI.
 
 ### **Customizing Validation Messages**
 

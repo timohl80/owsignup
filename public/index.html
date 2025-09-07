@@ -146,6 +146,248 @@
       from { opacity: 0; transform: translateY(-5px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Visitor Information Popup Styles */
+    .visitor-popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .visitor-popup-overlay.show {
+        display: flex;
+    }
+
+    .visitor-popup {
+      background: white;
+      border-radius: var(--border-radius-lg);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: popupSlideIn 0.3s ease-out;
+    }
+
+    @keyframes popupSlideIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .visitor-popup-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: var(--spacing-lg);
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .visitor-popup-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #6b7280;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .visitor-popup-close:hover {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .visitor-popup-content {
+      padding: var(--spacing-lg);
+    }
+
+    .visitor-popup-buttons {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+    }
+
+    .visitor-skip-btn {
+      flex: 1;
+      background: #f3f4f6;
+      color: #6b7280;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .visitor-skip-btn:hover {
+      background: #e5e7eb;
+    }
+
+    /* Trade Fair Info Button - Hidden since popup is required */
+    .trade-fair-info-btn {
+      display: none;
+    }
+
+    .visitor-title {
+      color: var(--primary-color);
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: var(--spacing-xs);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-md);
+    }
+
+    .visitor-logo {
+      height: 32px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .demo-info-text {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: var(--spacing-lg);
+      margin-top: var(--spacing-sm);
+    }
+
+    .visitor-required-text {
+      color: var(--error-color);
+      font-size: 12px;
+      font-weight: 500;
+      margin: 0;
+      text-align: center;
+    }
+
+    .visitor-subtitle {
+      color: var(--text-secondary);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .visitor-form {
+      max-width: 100%;
+    }
+
+    .form-row {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .visitor-form .form-group {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .visitor-form label {
+      display: block;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-xs);
+      font-size: 14px;
+    }
+
+    .visitor-form input[type="text"],
+    .visitor-form input[type="tel"],
+    .visitor-form select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: white;
+    }
+
+    .visitor-form input[type="text"]:focus,
+    .visitor-form input[type="tel"]:focus,
+    .visitor-form select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+    }
+
+    .visitor-form select[multiple] {
+      min-height: 100px;
+      padding: 8px 16px;
+    }
+
+    .visitor-form select[multiple] option {
+      padding: 8px 12px;
+      margin: 2px 0;
+    }
+
+    .checkbox-group {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      margin-right: var(--spacing-sm);
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary-color);
+    }
+
+    .visitor-submit-btn {
+      width: 100%;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: var(--border-radius);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .visitor-submit-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .visitor-submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .visitor-submit-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      transform: none;
+    }
       
       .password-container {
         position: relative;
@@ -244,7 +486,7 @@
       .footer {
         text-align: center;
       margin-top: var(--spacing-lg);
-      font-size: 12px;
+        font-size: 12px;
       color: var(--text-muted);
     }
 
@@ -533,7 +775,67 @@
         </div>
     </header>
 
-    <main>
+    <!-- Trade Fair Visitor Information Popup -->
+    <div class="visitor-popup-overlay" id="visitorPopupOverlay">
+      <div class="visitor-popup">
+        <div class="visitor-popup-header">
+          <h2 class="visitor-title">
+            <img src="stacken.png" alt="Stacken Logo" class="visitor-logo">
+            Intresseanmälan
+          </h2>
+        </div>
+        
+        <div class="visitor-popup-content">
+          <p class="visitor-subtitle">Hjälp oss att följa upp med dig efter mässan</p>
+          
+          <form class="visitor-form" id="visitorForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="companyName">Företagsnamn</label>
+                <input type="text" id="companyName" name="companyName" placeholder="Ditt företagsnamn">
+              </div>
+              <div class="form-group">
+                <label for="visitorName">Besökarens namn</label>
+                <input type="text" id="visitorName" name="visitorName" placeholder="Ditt namn">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="phoneNumber">Telefonnummer (valfritt)</label>
+              <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="t.ex., 070-123 45 67">
+            </div>
+            
+            <div class="form-group">
+              <label for="interests">Intresseområden</label>
+              <select id="interests" name="interests" multiple>
+                <option value="ai-integration">AI-integration</option>
+                <option value="custom-solutions">Anpassade lösningar</option>
+                <option value="pricing">Prisinformation</option>
+                <option value="technical-demo">Teknisk demonstration</option>
+                <option value="partnership">Partnerskapsmöjligheter</option>
+              </select>
+            </div>
+            
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="followUp" name="followUp">
+                <span class="checkmark"></span>
+                Följ upp med mig efter mässan
+              </label>
+            </div>
+            
+            <div class="visitor-popup-buttons">
+              <button type="submit" class="visitor-submit-btn">Fortsätt till demokonto</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trade Fair Info Button (shows popup) -->
+    <button class="trade-fair-info-btn" id="tradeFairInfoBtn">🏢 Trade Fair Info</button>
+
+    <main id="mainContent" style="display: none;">
         <h1 class="title">Stacken.ai</h1>
         <p class="subtitle">Compliant AI by Digitalist©</p>
       
@@ -545,6 +847,7 @@
 
       <!-- Registration Tab -->
       <div class="tab-content active" id="register-tab">
+        <p class="demo-info-text">Skapa ditt demo konto</p>
         <form id="registrationForm" novalidate>
         <div class="form-group">
           <label for="email" class="form-label">E-post</label>
@@ -693,8 +996,8 @@
       // Constants
     const SVG_ICONS = {
       eye: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-        <circle cx="12" cy="12" r="3"/>
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
       </svg>`,
       eyeOff: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
@@ -910,7 +1213,7 @@
             elements.regSubmitBtn,
             'Registrera konto'
           );
-        } else {
+          } else {
           showError(result.message || 'Registrering misslyckades', elements.regSubmitBtn, 'Registrera konto');
         }
         
@@ -1055,6 +1358,134 @@
       });
     }
 
+    // Visitor Information Popup Handler (Required)
+    const visitorForm = document.getElementById('visitorForm');
+    const visitorPopupOverlay = document.getElementById('visitorPopupOverlay');
+    const mainContent = document.getElementById('mainContent');
+
+    if (visitorForm) {
+      visitorForm.addEventListener('submit', handleVisitorFormSubmit);
+    }
+
+    // Check if visitor form is enabled before showing popup
+    checkVisitorFormConfig();
+
+    // Function to check visitor form configuration
+    async function checkVisitorFormConfig() {
+      try {
+        const response = await fetch('/api/visitor-form-config');
+        const config = await response.json();
+        
+        if (config.enabled) {
+          // Show visitor popup if enabled
+          showVisitorPopup();
+        } else {
+          // Show main content directly if disabled
+          if (mainContent) {
+            mainContent.style.display = 'block';
+          }
+        }
+      } catch (error) {
+        console.error('Error checking visitor form config:', error);
+        // Default to showing visitor popup if there's an error
+        showVisitorPopup();
+      }
+    }
+
+    function showVisitorPopup() {
+      if (visitorPopupOverlay) {
+        visitorPopupOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      }
+    }
+
+    // Visitor Form Submission Handler
+    function handleVisitorFormSubmit(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      const visitorData = {
+        companyName: formData.get('companyName'),
+        visitorName: formData.get('visitorName'),
+        phoneNumber: formData.get('phoneNumber'),
+        interests: Array.from(formData.getAll('interests')),
+        followUp: formData.get('followUp') === 'on',
+        timestamp: new Date().toISOString()
+      };
+
+      // Show loading state
+      const submitBtn = event.target.querySelector('.visitor-submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sparar...';
+
+      // Submit to Google Form
+      submitToGoogleForm(visitorData, submitBtn);
+    }
+
+    // Function to submit data to Google Form via server (seamless experience)
+    async function submitToGoogleForm(data, submitBtn) {
+      try {
+        // Submit to our server endpoint which handles Google Form submission
+        const response = await fetch('/api/submit-visitor-info', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            companyName: data.companyName,
+            visitorName: data.visitorName,
+            phoneNumber: data.phoneNumber,
+            interests: data.interests,
+            followUp: data.followUp
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          // Show success state
+          submitBtn.disabled = false;
+          submitBtn.textContent = '✓ Välkommen!';
+          submitBtn.style.background = 'var(--success-color)';
+          
+          console.log('Visitor data submitted successfully:', result);
+          
+          // Show main content and hide popup after 1 second
+          setTimeout(() => {
+            if (visitorPopupOverlay) {
+              visitorPopupOverlay.style.display = 'none';
+            }
+            if (mainContent) {
+              mainContent.style.display = 'block';
+            }
+            document.body.style.overflow = ''; // Restore scrolling
+          }, 1000);
+        } else {
+          throw new Error(result.error || 'Submission failed');
+        }
+
+      } catch (error) {
+        console.error('Error submitting visitor info:', error);
+        
+        // Show error state
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Försök igen';
+        submitBtn.style.background = 'var(--error-color)';
+        
+        // Still show main content after error
+        setTimeout(() => {
+          if (visitorPopupOverlay) {
+            visitorPopupOverlay.style.display = 'none';
+          }
+          if (mainContent) {
+            mainContent.style.display = 'block';
+          }
+          document.body.style.overflow = '';
+        }, 2000);
+      }
+    }
+
     // Initialize
     console.log('Registration and login forms initialized');
     console.log('Registration form:', elements.regForm);
@@ -1120,7 +1551,7 @@
       chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
 
-    // Function to create message with clickable links
+    // Function to create message with clickable links and emails
     function createMessageWithLinks(container, text) {
       // First handle markdown-style links [text](url)
       const markdownRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -1149,33 +1580,45 @@
       if (lastIndex < text.length) {
         let remainingText = text.slice(lastIndex);
         
-        // Handle plain URLs in remaining text
+        // Handle plain URLs and email addresses in remaining text
         const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+        
+        // Combine both regex patterns
+        const combinedRegex = /(https?:\/\/[^\s]+|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
         let urlMatch;
         let urlLastIndex = 0;
         
-        while ((urlMatch = urlRegex.exec(remainingText)) !== null) {
-          // Add text before the URL
+        while ((urlMatch = combinedRegex.exec(remainingText)) !== null) {
+          // Add text before the URL/email
           if (urlMatch.index > urlLastIndex) {
             const textBefore = remainingText.slice(urlLastIndex, urlMatch.index);
             container.appendChild(document.createTextNode(textBefore));
           }
           
-          // Create the URL link
+          // Create the link
           let cleanUrl = urlMatch[1];
           let trailingPunctuation = '';
           
-          // Check if URL ends with punctuation
+          // Check if URL/email ends with punctuation
           if (/[.,!?;:]$/.test(cleanUrl)) {
             trailingPunctuation = cleanUrl.slice(-1);
             cleanUrl = cleanUrl.slice(0, -1);
           }
           
           const link = document.createElement('a');
-          link.href = cleanUrl;
-          link.target = '_blank';
-          link.rel = 'noopener noreferrer';
-          link.textContent = cleanUrl;
+          
+          // Check if it's an email address
+          if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(cleanUrl)) {
+            link.href = `mailto:${cleanUrl}`;
+            link.textContent = cleanUrl;
+          } else {
+            link.href = cleanUrl;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = cleanUrl;
+          }
+          
           container.appendChild(link);
           
           // Add trailing punctuation
@@ -1183,10 +1626,10 @@
             container.appendChild(document.createTextNode(trailingPunctuation));
           }
           
-          urlLastIndex = urlRegex.lastIndex;
+          urlLastIndex = combinedRegex.lastIndex;
         }
         
-        // Add remaining text after URLs
+        // Add remaining text after URLs/emails
         if (urlLastIndex < remainingText.length) {
           container.appendChild(document.createTextNode(remainingText.slice(urlLastIndex)));
         }
